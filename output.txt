@@ -1,0 +1,14 @@
+numpages=1
+<------------Memory layout------------->
+Start location = 0x7ff06c0ba4b0, size = 2896
+<------------Memory layout------------->
+<------------Memory layout------------->
+Start location = 0x7ff06c0ba4b9, size = 2887
+<------------Memory layout------------->
+Start location = 0x7ff06c0ba4c2, size = 2878
+addr of char is 0x7ff06c0ba4b8
+addr of char is 0x7ff06c0ba4c1
+<------------Memory layout------------->
+Start location = 0x7ff06c0ba4b0, size = 9
+Start location = 0x7ff06c0ba4c2, size = 2878
+Error while freeing already freed block
