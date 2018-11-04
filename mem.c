@@ -122,34 +122,48 @@ int mem_free(void *ptr, int coalesce)
       return 0;
     }
 
-  //printf("%p\n", ptr);
   list * temp_l    = head;
   header_t *temp_h = ptr - (sizeof(header_t));
-  //void *mEnd = ptr + temp_h->size -1;
   void *hInfo = ptr + temp_h->size -1;
-  printf("%p\n", hInfo);
+  
+  void *th = temp_h;
   
   while(temp_l != NULL)
     {      
       if(hInfo == temp_l->startaddr-1)
 	{
-	  printf("Bitch\n");
+	  //freed block can fit in the beginning
 	  temp_l->startaddr = hInfo-sizeof(header_t);
 	  temp_l->size     += sizeof(header_t) + temp_h->size;
 	  return 0;
 	}
-      // else if((hInfo >= temp_l->startaddr) &&(mEnd<=temp_l->startaddr+temp_l->size -1))
-      //{
-      //  printf("Attempt to access freed memory!!\n");
-      //  exit(1);
-      //}
+      else if(th >= temp_l->startaddr && hInfo <= temp_l->startaddr + temp_l->size -1)
+	{
+	  //attempt to free already freed block
+	  printf("Error while freeing already freed block\n");
+	  exit(1);
+	}
+      
       temp_l = temp_l->next;
     }
+
+  //freed block present in between
+  temp_l = (list*)dsmem;
+  temp_l->startaddr = temp_h;
+  temp_l->size      = sizeof(header_t) + temp_h->size;
+  temp_l->next      = head;
+  head              = temp_l;
   return 0;
 }
 
 void mem_dump()
 {
+  if(head == NULL)
+    {
+      printf("<------------Memory layout------------->\n");
+      printf("Start location = %p, size = %ld\n", startmem, reqsize);
+    }
+  
   list *temp_h = head;
   printf("<------------Memory layout------------->\n");
   while(temp_h != NULL)

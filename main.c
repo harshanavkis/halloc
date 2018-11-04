@@ -14,6 +14,8 @@ int main(int argc, char* argv[])
   if(rc != 0)
     exit(1);
 
+  mem_dump();
+
   char *p   = (char*) mem_alloc(sizeof(char));
   mem_dump();
   char* x  = (char*) mem_alloc(sizeof(char));
@@ -22,7 +24,8 @@ int main(int argc, char* argv[])
   printf("addr of char is %p\n", p);
   printf("addr of char is %p\n", x);
 
-  mem_free(x, 0);
+  mem_free(p, 0);
   mem_dump();
-  printf("%ld", sizeof(int));
+
+  mem_free(p, 0);
 }
