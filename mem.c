@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -112,4 +113,48 @@ void *mem_alloc(int size)
   temp_l->startaddr = freestart + size;
   temp_l->size     -= size; 
   return memloc;
+}
+
+int mem_free(void *ptr, int coalesce)
+{
+  if(ptr == NULL)
+    {
+      return 0;
+    }
+
+  //printf("%p\n", ptr);
+  list * temp_l    = head;
+  header_t *temp_h = ptr - (sizeof(header_t));
+  //void *mEnd = ptr + temp_h->size -1;
+  void *hInfo = ptr + temp_h->size -1;
+  printf("%p\n", hInfo);
+  
+  while(temp_l != NULL)
+    {      
+      if(hInfo == temp_l->startaddr-1)
+	{
+	  printf("Bitch\n");
+	  temp_l->startaddr = hInfo-sizeof(header_t);
+	  temp_l->size     += sizeof(header_t) + temp_h->size;
+	  return 0;
+	}
+      // else if((hInfo >= temp_l->startaddr) &&(mEnd<=temp_l->startaddr+temp_l->size -1))
+      //{
+      //  printf("Attempt to access freed memory!!\n");
+      //  exit(1);
+      //}
+      temp_l = temp_l->next;
+    }
+  return 0;
+}
+
+void mem_dump()
+{
+  list *temp_h = head;
+  printf("<------------Memory layout------------->\n");
+  while(temp_h != NULL)
+    {
+      printf("Start location = %p, size = %d\n", temp_h->startaddr, temp_h->size);
+      temp_h = temp_h->next;
+    }
 }

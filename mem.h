@@ -17,7 +17,7 @@ typedef struct __header_t
 int memdsinit(void);
 int mem_init(int size, int debug);
 void *mem_alloc(int size);
-//int mem_free(void* ptr, int coalesce);
-//void mem_dump();
+int mem_free(void* ptr, int coalesce);
+void mem_dump();
 
 #endif

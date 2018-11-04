@@ -13,10 +13,16 @@ int main(int argc, char* argv[])
   int rc   = mem_init(size, 0);
   if(rc != 0)
     exit(1);
-  char *p   = (char*) mem_alloc(sizeof(char));
-  char* x  = (char*) mem_alloc(sizeof(char));
 
+  char *p   = (char*) mem_alloc(sizeof(char));
+  mem_dump();
+  char* x  = (char*) mem_alloc(sizeof(char));
+  mem_dump();
+  
   printf("addr of char is %p\n", p);
   printf("addr of char is %p\n", x);
+
+  mem_free(x, 0);
+  mem_dump();
   printf("%ld", sizeof(int));
 }
